@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 public class JwtService {
@@ -23,10 +23,11 @@ public class JwtService {
 
     // Genera un token JWT para un usuario autenticado
     public String generateToken(Authentication authentication) {
-        // Extraer los roles del usuario y convertirlos a String
-        String roles = authentication.getAuthorities().stream()
+        // Roles reales (ROLE_xxx), sin FACTOR_PASSWORD
+        List<String> roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+                .filter(a -> a.startsWith("ROLE_"))
+                .toList();
 
         // Construir el token JWT
         return Jwts.builder()
@@ -36,7 +37,7 @@ public class JwtService {
                 .expiration(new Date(
                         System.currentTimeMillis() + 86400000  // Expira en 24h
                 ))
-                .claim("roles", roles)              // Roles del usuario
+                .claim("roles", roles)              // Lista de roles
                 .signWith(secretKey)                // Firmar con clave secreta
                 .compact();                         // Generar String del token
     }
