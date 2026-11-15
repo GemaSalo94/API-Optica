@@ -29,6 +29,12 @@ public class CitaController {
         return citaService.listar();
     }
 
+    @GetMapping("/disponibilidad")
+    public List<String> disponibilidad(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            @RequestParam Integer idServicio) {
+        return citaService.disponibilidad(fecha, idServicio);
+    }
     @GetMapping("/{id}")
     public CitaResponseDTO obtener(@PathVariable Integer id) {
         return citaService.obtener(id);

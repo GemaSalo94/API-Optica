@@ -74,7 +74,17 @@ public class ClienteService {
             return cliente.getUsuario();   // conserva la cuenta actual
         }
 
-        return pideCuenta ? crearCuenta(dto) : null;
+        if (!pideCuenta) {
+            throw new IllegalArgumentException("El email es obligatorio para crear el cliente");
+        }
+
+        return crearCuenta(dto);
+    }
+    public ClienteResponseDTO obtenerPorEmail(String email) {
+        Cliente cliente = clienteRepository.findByUsuarioEmail(email)
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                        "No existe cliente para el usuario: " + email));
+        return toResponse(cliente);
     }
 
     private Usuario vincularUsuarioExistente(Cliente cliente, Integer idUsuario) {

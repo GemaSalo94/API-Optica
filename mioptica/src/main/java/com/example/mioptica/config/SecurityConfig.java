@@ -24,7 +24,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.List;
-
+import org.springframework.http.HttpMethod;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -44,6 +44,7 @@ public class SecurityConfig {
                         // Solo ADMIN gestiona usuarios
                         .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/citas/**").hasRole("ADMIN")
                         // El resto de la API requiere token
                         .anyRequest().authenticated()
                 )

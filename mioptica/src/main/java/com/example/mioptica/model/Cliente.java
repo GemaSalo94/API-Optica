@@ -16,8 +16,8 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "id_usuario")
+    @OneToOne(optional = false)
+    @JoinColumn(name = "id_usuario", nullable = false, unique = true)
     private Usuario usuario;
 
     @Column(nullable = false, length = 50)
@@ -28,4 +28,5 @@ public class Cliente {
 
     @Column(nullable = false, length = 15)
     private String telefono;
+
 }

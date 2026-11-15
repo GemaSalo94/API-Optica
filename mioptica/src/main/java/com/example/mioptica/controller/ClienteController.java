@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+import org.springframework.security.core.Authentication;
 @RestController
 @RequestMapping("/api/clientes")
 @RequiredArgsConstructor
@@ -22,6 +22,10 @@ public class ClienteController {
         return clienteService.listar();
     }
 
+    @GetMapping("/mi-perfil")
+    public ClienteResponseDTO miPerfil(Authentication authentication) {
+        return clienteService.obtenerPorEmail(authentication.getName());
+    }
     @GetMapping("/{id}")
     public ClienteResponseDTO obtener(@PathVariable Integer id) {
         return clienteService.obtener(id);
